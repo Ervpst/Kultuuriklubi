@@ -1,3 +1,3 @@
 # Kultuuriklubi
 
-## Kultuuriklubi koduleht MEAN stackiga
+## Kultuuriklubi koduleht MEAN stackiga (Mongo, Express, Angular, Node)
