@@ -1,3 +1,3 @@
 # Kultuuriklubi
 
-## Kultuuriklubi koduleht MERN stackiga
+## Kultuuriklubi koduleht MEAN stackiga
