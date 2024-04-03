@@ -1,1 +1,1 @@
-# Kultuuriklubi
+# Backendi tööle panemiseks, mine cd backend ja kirjuta npm run dev
