@@ -3,13 +3,15 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component'; // Import HomeComponent
-import { ContactComponent } from './contact/contact.component'; // Import ContactComponent
+import { HomeComponent } from './home/home.component'; 
+import { ContactComponent } from './contact/contact.component'; 
+import {LoginComponent} from './login/login.component'
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect to '/home' route
-  { path: 'home', component: HomeComponent }, // Add home route
-  { path: 'contact', component: ContactComponent }, // Add contact route
+  { path: 'home', component: HomeComponent }, 
+  { path: 'contact', component: ContactComponent },
+  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({
@@ -19,8 +21,9 @@ const routes: Routes = [
     imports: [
         BrowserModule,
         RouterModule.forRoot(routes),
-        HomeComponent, // Import HomeComponent
-        ContactComponent, // Import ContactComponent
+        HomeComponent, 
+        ContactComponent, 
+        LoginComponent,
     ],
     providers: [],
     bootstrap: [AppComponent]

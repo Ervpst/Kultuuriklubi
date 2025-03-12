@@ -8,7 +8,7 @@ require("dotenv").config();
 const cors = require("cors");
 
 
-//const userRoutes = require("./routes/user.routes");
+const userRoutes = require("./routes/user.routes");
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -25,14 +25,24 @@ mongoose
 
 
 //route mid
-//app.use("/user", userRoutes);
+app.use("/user", userRoutes);
 
 //app.get("*", (req, res) => {
-  //res.send("404");
+ // res.send("404");
 //});
+app.get("/get", (req, res) => {
+	console.log("GET Request Successfull!");
+	res.send("Get Req Successfully initiated");
+})
 app.get('/', (req, res) => {
 res.send('Toimib!!!!');
 });
+
+app.post("/post", (req, res) => {
+	console.log("POST REQUEST SUCCESSFUL");
+	console.log(req.body);
+	res.send(`Data POSt Request Recieved`);
+})
 
 app.listen(port, () => {
 console.log(`Server is running on port ${port}`);
