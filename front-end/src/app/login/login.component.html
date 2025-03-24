@@ -1,15 +1,20 @@
-<form >
-    <div class="form-group">
-      <label for="name">Full name</label>
-      <input type="text" class="form-control" name="name" placeholder="Enter your name">
-    </div>
-    <div class="form-group">
-      <label for="email">Email address</label>
-      <input type="email" class="form-control" name="email" placeholder="Enter email">
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" name="password" placeholder="Password" >
-    </div>
-    <button type="submit" class="btn btn-default">Register!</button>
+<div class="max-w-sm mx-auto mt-10 p-6 border-gray-300 rounded">
+  <h2 class="text-2xl font-bold mb-4">Login</h2>
+
+  <form (submit)="onSubmit(regForm)" #regForm="ngForm">
+    <input
+    [(ngModel)]="name"
+    type="text" name="name" placeholder="Username" required class="block w-full mb-3 p-2 border">
+    <input
+    [(ngModel)]="email"
+    type="text" name="email" placeholder="Email" required class="block w-full mb-3 p-2 border">
+    
+    <input
+    [(ngModel)]="password"
+    type="password" name="password" placeholder="Password" required class="block w-full mb-3 p-2 border">
+    <button
+    type="submit"  class="bg-blue-600 text-white px-4 py-2 rounded w-full"
+    >Login</button>
+    <button (click)="logout()" class="bg-red-500 px-3 py-1 rounded">Logout</button>
   </form>
+</div>
