@@ -7,18 +7,24 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AuthenticationService } from './authentication.service';
+import { authGuard } from './auth.guard';
 //import { AppRoutingModule } from './app-routing.module';
 
 import { HomeComponent } from './home/home.component'; 
-import { ContactComponent } from './contact/contact.component'; 
+import { ContactComponent } from './contact/contact.component';
+import { GalleryComponent } from './gallery/gallery.component';  
+import { AdminComponent } from './admin/admin.component';
 import { LoginComponent} from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
 
+
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect to '/home' route
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, 
   { path: 'home', component: HomeComponent }, 
+  { path: 'gallery', component: GalleryComponent }, 
   { path: 'contact', component: ContactComponent },
+  { path: 'admin', component: AdminComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent}
 ];
@@ -28,18 +34,19 @@ const routes: Routes = [
         AppComponent,
         RegisterComponent,
         LoginComponent,
+        AdminComponent,
+        GalleryComponent
     ],
     imports: [
-        BrowserModule,
-        HttpClientModule ,
-        RouterModule.forRoot(routes),
-        FormsModule,
-        HomeComponent, 
-        ContactComponent, 
-        
-        
-        
-    ],
+    BrowserModule,
+    HttpClientModule,
+    RouterModule.forRoot(routes),
+    FormsModule,
+    HomeComponent,
+    ContactComponent,
+    
+    
+],
     providers: [AuthenticationService],
     bootstrap: [AppComponent]
 })

@@ -23,12 +23,12 @@ export class RegisterComponent {
       this.authenticationService.register(this.name, this.email, this.password)
       .subscribe({
         next: () => {
-          alert('Registration successful! Please log in.');
+          alert('Registreerimine õnnestus! ');
           this.router.navigate(['/login']);
         },
         error: (err) => {
-          console.error('Registration failed.', err);
-          alert('Registration failed: ' + (err.error?.message || "Unknown error"));
+          console.error('Registreerimine ebaõnnestus.', err);
+          alert('Registration ebaõnnestus: ' + (err.error?.message || "Unknown error"));
         }
       });
     }

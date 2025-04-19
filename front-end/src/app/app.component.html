@@ -1,9 +1,17 @@
 <div class="banner"></div>
 <nav class="navbar">
   <a class="nav-link" routerLink="/home">Home</a>
+  <a class="nav-link" routerLink="/gallery">Gallery</a>
   <a class="nav-link" routerLink="/contact">Contact</a>
-  <a class="nav-link" routerLink="/login">Login</a>
-  <a class="nav-link" routerLink="/register">Register</a>
+  <a 
+    *ngIf="isAuthenticated()" 
+    class="nav-link" 
+    routerLink="/admin" 
+  >
+    Admin
+  </a>
+  <a  class="nav-link" routerLink="/login">Login</a>
+  <a  class="nav-link" routerLink="/register">Register</a>
 </nav>
   <router-outlet></router-outlet>
 

@@ -9,6 +9,8 @@ const cors = require("cors");
 
 
 const userRoutes = require("./routes/user.routes");
+const eventRoutes = require("./routes/event.routes");
+const galleryRoutes = require("./routes/gallery.routes");
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -27,9 +29,15 @@ mongoose
 //route mid
 app.use("/user", userRoutes);
 
-//app.get("*", (req, res) => {
- // res.send("404");
-//});
+app.use("/event", eventRoutes);
+
+app.use("/gallery", galleryRoutes);
+
+
+app.get("*", (req, res) => {
+  res.send("404");
+});
+
 app.get("/get", (req, res) => {
 	console.log("GET Request Successfull!");
 	res.send("Get Req Successfully initiated");

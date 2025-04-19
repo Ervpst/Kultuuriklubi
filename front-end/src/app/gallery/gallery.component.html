@@ -1,0 +1,9 @@
+<div class="gallery-container">
+    <h1>Galerii</h1>
+    <div class="gallery-grid">
+      <div *ngFor="let picture of gallery" class="gallery-item">
+        <img *ngIf="picture.galleryPicture" [src]="picture.galleryPicture" alt="Gallery Picture" />
+        <p>{{ picture.name }}</p>
+      </div>
+    </div>
+  </div>

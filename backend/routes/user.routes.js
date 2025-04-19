@@ -3,6 +3,7 @@ const userController = require("../controllers/user.controller");
 const validationMiddleware = require("../middleware/validationMiddleware.js");
 const { check } = require("express-validator");
 
+
 // middleware that is specific to this router
 //shows time
 router.use((req, res, next) => {

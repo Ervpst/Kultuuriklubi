@@ -29,8 +29,8 @@ export class LoginComponent {
           this.router.navigate(['/home']);
         },
        error: (err)=>{
-        console.error('Login failed: ', err);
-        alert('Login failed '+ (err.error.error)|| 'Check credentials')
+        console.error('Logimine ebaõnnestus: ', err);
+        alert('Logimine ebaõnnestus '+ (err.error.error)|| 'Vaata andmed üle')
        }
       });
     }
