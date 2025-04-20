@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AuthenticationService } from './authentication.service';
@@ -29,25 +29,16 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent}
 ];
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         RegisterComponent,
         LoginComponent,
         AdminComponent,
         GalleryComponent
     ],
-    imports: [
-    BrowserModule,
-    HttpClientModule,
-    RouterModule.forRoot(routes),
-    FormsModule,
-    HomeComponent,
-    ContactComponent,
-    
-    
-],
-    providers: [AuthenticationService],
-    bootstrap: [AppComponent]
-})
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        RouterModule.forRoot(routes),
+        FormsModule,
+        HomeComponent,
+        ContactComponent], providers: [AuthenticationService, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
