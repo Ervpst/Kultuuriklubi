@@ -1,9 +1,18 @@
 <div class="gallery-container">
-    <h1>Galerii</h1>
-    <div class="gallery-grid">
-      <div *ngFor="let picture of gallery" class="gallery-item">
-        <img *ngIf="picture.galleryPicture" [src]="picture.galleryPicture" alt="Gallery Picture" />
-        <p>{{ picture.name }}</p>
-      </div>
-    </div>
+  <h1>Galerii</h1>
+  <div class="gallery-grid">
+    <mat-card *ngFor="let picture of gallery" class="gallery-item" (click)="openImageDialog(picture.galleryPicture)">
+      <mat-card-header>
+        <mat-card-title>{{ picture.name }}</mat-card-title>
+      </mat-card-header>
+      <img mat-card-image *ngIf="picture.galleryPicture" [src]="picture.galleryPicture" alt="Gallery Picture" />
+    </mat-card>
   </div>
+</div>
+
+
+<ng-template #imageDialog let-data>
+  <div class="dialog-container">
+    <img [src]="data" alt="Full Image" class="full-image" />
+  </div>
+</ng-template>

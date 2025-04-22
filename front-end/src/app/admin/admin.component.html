@@ -3,74 +3,96 @@
 
   <div class="admin-content">
     <div class="event-section">
-      <h2>Ürituste muutmine</h2>
-      <!-- Event Form -->
-      <form (submit)="createEvent()" enctype="multipart/form-data">
-        <div>
-          <label for="name">Ürituse nimi:</label>
-          <input type="text" id="name" [(ngModel)]="eventName" name="name" required />
-        </div>
+      <mat-card>
+        <mat-card-title>Ürituse lisamine</mat-card-title>
+        <mat-card-content>
+          <form (submit)="createEvent()" enctype="multipart/form-data">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Ürituse nimi</mat-label>
+              <input matInput [(ngModel)]="eventName" name="name" required />
+            </mat-form-field>
 
-        <div>
-          <label for="description">Ürituse kirjeldus:</label>
-          <textarea id="description" [(ngModel)]="eventDescription" name="description" required></textarea>
-        </div>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Ürituse kirjeldus</mat-label>
+              <textarea matInput [(ngModel)]="eventDescription" name="description" required></textarea>
+            </mat-form-field>
 
-        <div>
-          <label for="date">Ürituse kuupäev:</label>
-          <input type="date" id="date" [(ngModel)]="eventDate" name="date" required />
-        </div>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Kuupäev</mat-label>
+              <input matInput [(ngModel)]="eventDate" name="date" type="date" required />
+            </mat-form-field>
 
-        <div>
-          <label for="time">Ürituse aeg:</label>
-          <input type="time" id="time" [(ngModel)]="eventTime" name="time" required />
-        </div>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Aeg</mat-label>
+              <input matInput [(ngModel)]="eventTime" name="time" type="time" required />
+            </mat-form-field>
 
-        <div>
-          <label for="coverPicture">Pilt:</label>
-          <input type="file" id="coverPicture" (change)="onFileSelected($event)" required />
-        </div>
+            <div class="full-width file-input-container">
+              <label for="event-cover" class="custom-file-label">
+                Vali ürituse pilt
+                <input id="event-cover" type="file" (change)="onFileSelected($event)" required />
+             </label>
+            <span class="file-name">{{ selectedFile?.name || 'Ühtegi faili pole valitud' }}</span>
+          </div>
+            <div class="button-container">
+              <button mat-raised-button color="primary" type="submit">Lisa üritus</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
 
-        <button type="submit">Lisa üritus</button>
-      </form>
-
-      <!-- Events -->
-      <h3>Üritused</h3>
-      <div *ngFor="let event of events" class="event-item">
-        <img *ngIf="event.coverPicture" [src]="event.coverPicture" alt="Event Cover" />
-        <div class="event-details">
-          <h4>{{ event.name }}</h4>
-          <p>{{ event.description }}</p>
-          <p><strong>Kuupäev:</strong> {{ event.date | date }}</p>
-          <p><strong>Aeg:</strong> {{ event.time }}</p>
-          <button (click)="deleteEvent(event._id)">Kustuta</button>
-        </div>
-      </div>
+      <mat-card>
+        <mat-card-title>Üritused</mat-card-title>
+        <mat-card-content>
+          <div *ngFor="let event of events" class="event-item">
+            <img *ngIf="event.coverPicture" [src]="event.coverPicture" alt="Event Cover" />
+            <div class="event-details">
+              <h4>{{ event.name }}</h4>
+              <p>{{ event.description }}</p>
+              <p>Kuupäev: {{ event.date | date }}</p>
+              <p>Aeg: {{ event.time }}</p>
+              <button mat-raised-button color="warn" (click)="deleteEvent(event._id)">Kustuta</button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
 
-    <!--Gallery-->
     <div class="gallery-section">
-      <h2>Galerii muutmine</h2>
-      <form (submit)="uploadGalleryPicture()" enctype="multipart/form-data">
-        <div>
-          <label for="galleryName">Pildi nimi:</label>
-          <input type="text" id="galleryName" [(ngModel)]="galleryName" name="galleryName" required />
-        </div>
+      <mat-card>
+        <mat-card-title>Pildi lisamine</mat-card-title>
+        <mat-card-content>
+          <form (submit)="uploadGalleryPicture()" enctype="multipart/form-data">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Pildi pealkiri</mat-label>
+              <input matInput [(ngModel)]="galleryName" name="galleryName" required />
+            </mat-form-field>
 
-        <div>
-          <label for="galleryPicture">Galerii pilt:</label>
-          <input type="file" id="galleryPicture" (change)="onGalleryFileSelected($event)" required />
-        </div>
+            <div class="full-width file-input-container">
+              <label for="gallery-picture" class="custom-file-label">
+                Vali pildi fail
+                <input id="gallery-picture" type="file" (change)="onGalleryFileSelected($event)" required />
+             </label>
+            <span class="file-name">{{ selectedGalleryFile?.name || 'Ühtegi faili ei valitud' }}</span>
+          </div>
 
-        <button type="submit">Lisa pilt</button>
-      </form>
+            <div class="button-container">
+              <button mat-raised-button color="primary" type="submit">Lisa pilt</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
 
-      <h3>Galerii</h3>
-      <div *ngFor="let picture of gallery" class="gallery-item">
-        <img *ngIf="picture.galleryPicture" [src]="picture.galleryPicture" alt="Gallery Picture" />
-        <p>{{ picture.name }}</p>
-        <button (click)="deleteGalleryPicture(picture._id)">Kustuta</button>
-      </div>
+      <mat-card>
+        <mat-card-title>Galerii pildid</mat-card-title>
+        <mat-card-content>
+          <div *ngFor="let picture of gallery" class="gallery-item">
+            <img *ngIf="picture.galleryPicture" [src]="picture.galleryPicture" alt="Gallery Picture" />
+            <p>{{ picture.name }}</p>
+            <button mat-raised-button color="warn" (click)="deleteGalleryPicture(picture._id)">Kustuta</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>

@@ -1,0 +1,77 @@
+.contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .council-section {
+    margin-top: 40px;
+  }
+  
+  .council-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .council-member {
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .council-picture {
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  mat-card-title {
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  mat-card-subtitle {
+    font-size: 1.2rem;
+    color: #555;
+  }
+.contact-text {
+  max-width: 600px; 
+  margin: 40px 0; 
+  text-align: left; 
+}
+
+.contact-text h1 {
+  font-size: 2rem;
+  color: #B80007;
+  margin-bottom: 20px;
+}
+
+.contact-text p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.contact-text ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.contact-text ul li {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+.contact-text ul li a {
+  color: #B80007;
+  text-decoration: none;
+}
+
+.contact-text ul li a:hover {
+  text-decoration: underline;
+}

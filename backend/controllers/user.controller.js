@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "3h" });
+  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "30m" });
 };
 
 exports.signup = async (req, res) => {
@@ -14,8 +14,9 @@ exports.signup = async (req, res) => {
     const user = await User.findOne({
       email,
     });
-    if (user) throw Error("User with that e-mail already exists");
-
+    if (user) {
+      return res.status(422).json({ errors: [{ msg: "Email already exists", param: "email" }] });
+    }
     //salting
     const salt = await bcrypt.genSalt(10);
     if (!salt) throw Error("Something happened 1");

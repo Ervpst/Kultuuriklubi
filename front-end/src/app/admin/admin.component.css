@@ -14,12 +14,23 @@
   flex: 1;
 }
 
-form {
+mat-card {
+  margin-bottom: 20px;
+}
+mat-card-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 15px; 
+}
+
+.full-width {
+  width: 100%;
   margin-bottom: 20px;
 }
 
-form div {
-  margin-bottom: 10px;
+.button-container {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .event-item,
@@ -42,20 +53,40 @@ form div {
   margin-right: 15px;
 }
 
-.event-details,
-.gallery-item p {
+.event-details {
   flex: 1;
 }
 
 button {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
+  margin-left: 10px;
 }
 
-button:hover {
-  background-color: #ff1a1a;
+/* Hide the default file input */
+.file-input-container input[type="file"] {
+  display: none;
 }
+
+/* Button style */
+.custom-file-label {
+  display: inline-block;
+  background-color: #3f51b5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-file-label:hover {
+  background-color: #303f9f;
+}
+
+/* Style for file name  */
+.file-name {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #555;
+}
+

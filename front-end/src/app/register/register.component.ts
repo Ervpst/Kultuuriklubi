@@ -1,34 +1,38 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-
 import { Router } from '@angular/router';
-import { FormsModule, NgForm } from '@angular/forms';
-
+import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'app-register', 
+  selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
+  name: string = '';
+  email: string = '';
+  password: string = '';
+  errors: string[] = []; 
 
-  name = '';
-  email = '';
-  password = '';
+  constructor(private authenticationService: AuthenticationService, private router: Router) {}
 
-  constructor(private authenticationService: AuthenticationService, private router: Router){}
-
-  onSubmit(form: NgForm){
-    if(form.valid){
-      this.authenticationService.register(this.name, this.email, this.password)
-      .subscribe({
+  onSubmit(form: NgForm): void {
+    if (form.valid) {
+      this.errors = []; 
+      this.authenticationService.register(this.name, this.email, this.password).subscribe({
         next: () => {
-          alert('Registreerimine õnnestus! ');
-          this.router.navigate(['/login']);
+          alert('Registreerimine õnnestus!');
+          this.router.navigate(['/admin']);
         },
         error: (err) => {
           console.error('Registreerimine ebaõnnestus.', err);
-          alert('Registration ebaõnnestus: ' + (err.error?.message || "Unknown error"));
+
+          // Validations errors
+          if (err.status === 422 && err.error.errors) {
+            this.errors = err.error.errors.map((e: any) => `${e.param}: ${e.msg}`); 
+          } else {
+            this.errors = [err.error?.message || 'Tundmatu viga, proovi uuesti'];
+          }
         }
       });
     }

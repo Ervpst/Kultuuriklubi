@@ -1,0 +1,27 @@
+ .register-container {
+    max-width: 400px;
+    margin: 50px auto;
+  }
+  
+  mat-card {
+    padding: 20px;
+  }
+  
+  .full-width {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  .error-messages {
+    margin-top: 20px;
+    color: #b80007;
+  }
+  
+  .error {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }

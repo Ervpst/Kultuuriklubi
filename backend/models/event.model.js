@@ -8,7 +8,7 @@ const eventSchema = new Schema(
     date: { type: Date, required: true }, 
     time: { type: String, required: true },
     coverPicture: { type: Buffer, required: true }, // Store image as binary data
-    coverPictureType: { type: String, required: true }, // Store the MIME type (e.g., 'image/jpeg')
+    coverPictureType: { type: String, required: true }, // Store  type image/jpeg
   },
   { timestamps: true } 
 );

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 interface AuthResponse{
   token:string
@@ -43,7 +44,21 @@ export class AuthenticationService {
     return this.token;
   }
 
-  isAuthenticated(){
-    return !!this.loadToken();
+  isAuthenticated(): boolean {
+    const token = this.loadToken();
+    if (!token) return false;
+  
+    try {
+      const decoded: any = jwtDecode(token);
+      const currentTime = Math.floor(Date.now() / 1000); // seconds
+      if (decoded.exp < currentTime) {
+        this.logout(); // expired
+        return false;
+      }
+      return true;
+    } catch (error) {
+      this.logout(); // Uncorrect token
+      return false;
+    }
   }
 }

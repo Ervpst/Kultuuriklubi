@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -8,8 +9,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class GalleryComponent implements OnInit {
   gallery: any[] = [];
+  @ViewChild('imageDialog') imageDialog!: TemplateRef<any>;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetchGallery();
@@ -23,6 +25,13 @@ export class GalleryComponent implements OnInit {
       error: (err) => {
         console.error('Error fetching gallery pictures:', err);
       },
+    });
+  }
+
+  openImageDialog(imageUrl: string): void {
+    this.dialog.open(this.imageDialog, {
+      data: imageUrl,
+      panelClass: 'custom-dialog-container',
     });
   }
 }

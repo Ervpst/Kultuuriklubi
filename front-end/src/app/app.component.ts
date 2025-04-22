@@ -14,4 +14,13 @@ export class AppComponent {
   isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
   }
+  logout(): void {
+    this.authService.logout();
+  }
+  ngOnInit(): void {
+    // Auth stat check
+    setInterval(() => {
+      this.authService.isAuthenticated();
+    }, 5000); //  5 seconds
+  }
 }

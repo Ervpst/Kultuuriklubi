@@ -13,6 +13,15 @@ router.use((req, res, next) => {
 router.post(
   "/login",
   [
+    check("name")
+      .isLength({
+        min: 3,
+      })
+      .withMessage("Must be at least 3 characters long")
+      .trim()
+      .exists()
+      .matches(/^[A-ZÕÄÖÜa-zõäöü]+$/)
+      .withMessage("Must be alphabetic"),
     check("email")
       .isEmail()
       .normalizeEmail()

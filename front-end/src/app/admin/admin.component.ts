@@ -20,12 +20,12 @@ export class AdminComponent {
 
   constructor(private http: HttpClient) {}
 
-  // Handle file selection for events
+  // event file selection
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
   }
 
-  // Handle file selection for gallery
+  // gallery file selection
   onGalleryFileSelected(event: any): void {
     this.selectedGalleryFile = event.target.files[0];
   }
@@ -33,7 +33,7 @@ export class AdminComponent {
   // Create event
   createEvent(): void {
     if (!this.selectedFile) {
-      alert('Please select a cover picture.');
+      alert('Vali palun kaanepilt.');
       return;
     }
 
@@ -46,12 +46,12 @@ export class AdminComponent {
 
     this.http.post('http://localhost:4201/event/createEvent', formData).subscribe({
       next: (response: any) => {
-        alert('Event created successfully!');
+        alert('Üritus lisati edukalt!');
         this.fetchEvents();
       },
       error: (err) => {
-        console.error('Error creating event:', err);
-        alert('Failed to create event.');
+        console.error('Error ürituse loomisel:', err);
+        alert('Ei saanud üritust luua.');
       },
     });
   }
@@ -63,20 +63,34 @@ export class AdminComponent {
         this.events = response;
       },
       error: (err) => {
-        console.error('Error fetching events:', err);
+        console.error('Error ürituste saamisel:', err);
       },
     });
   }
   //Delete event
   deleteEvent(eventId: string): void {
-    this.events = this.events.filter(event => event._id !== eventId);
-    console.log(`Event with ID ${eventId} has been deleted.`);
+    const token = localStorage.getItem('jwt'); 
+  
+    this.http
+      .delete(`http://localhost:4201/event/deleteEvent/${eventId}`, {
+        headers: { Authorization: `Bearer ${token}` }, 
+      })
+      .subscribe({
+        next: () => {
+          alert('Üritus kustutati!');
+          this.fetchEvents(); 
+        },
+        error: (err) => {
+          console.error('Error ürituse kustutamisega:', err);
+          alert('Üritust ei saanud kustutada.');
+        },
+      });
   }
 
   // Upload a gallery picture
   uploadGalleryPicture(): void {
     if (!this.selectedGalleryFile) {
-      alert('Please select a gallery picture.');
+      alert('Vali galerii pilt.');
       return;
     }
 
@@ -86,17 +100,17 @@ export class AdminComponent {
 
     this.http.post('http://localhost:4201/gallery/createGalleryPic', formData).subscribe({
       next: (response: any) => {
-        alert('Gallery picture uploaded successfully!');
+        alert('Pilt lisati galeriisse edukalt!');
         this.fetchGallery();
       },
       error: (err) => {
-        console.error('Error uploading gallery picture:', err);
-        alert('Failed to upload gallery picture.');
+        console.error('Error pildi laadimisega:', err);
+        alert('Pilti ei saanud ülesse laadida.');
       },
     });
   }
 
-  // Fetch all gallery pictures
+  // Get all pictures
   fetchGallery(): void {
     this.http.get('http://localhost:4201/gallery/getGalleryPics').subscribe({
       next: (response: any) => {
@@ -108,7 +122,7 @@ export class AdminComponent {
     });
   }
 
-  // Delete icture
+  // Delete picture
   deleteGalleryPicture(pictureId: string): void {
     const token = localStorage.getItem('jwt'); 
 
@@ -118,12 +132,12 @@ export class AdminComponent {
       })
       .subscribe({
         next: () => {
-          alert('Gallery picture deleted successfully!');
+          alert('Pilt kustutati edukalt!');
           this.fetchGallery();
         },
         error: (err) => {
-          console.error('Error deleting gallery picture:', err);
-          alert('Failed to delete gallery picture.');
+          console.error('Error pildi kustutamisel:', err);
+          alert('Pilti ei saanud kustutada.');
         },
       });
   }

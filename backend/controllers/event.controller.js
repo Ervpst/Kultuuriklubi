@@ -27,12 +27,13 @@ exports.createEvent = async (req, res) => {
   }
 };
 
+
 // Get all events
 exports.getEvents = async (req, res) => {
   try {
-    const events = await Event.find();
+    const events = await Event.find().sort({ date: 1 }); 
 
-    // Convert binary data to Base64 
+    
     const eventsWithImages = events.map((event) => {
       return {
         ...event._doc,

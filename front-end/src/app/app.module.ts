@@ -3,13 +3,21 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
-import { AppComponent } from './app.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+
+
 import { AuthenticationService } from './authentication.service';
 import { authGuard } from './auth.guard';
-//import { AppRoutingModule } from './app-routing.module';
 
+import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component'; 
 import { ContactComponent } from './contact/contact.component';
 import { GalleryComponent } from './gallery/gallery.component';  
@@ -26,19 +34,33 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'admin', component: AdminComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent}
+  { path: 'register', component: RegisterComponent, canActivate: [authGuard]}
 ];
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         AppComponent,
         RegisterComponent,
         LoginComponent,
         AdminComponent,
-        GalleryComponent
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        RouterModule.forRoot(routes),
-        FormsModule,
+        GalleryComponent,
         HomeComponent,
-        ContactComponent], providers: [AuthenticationService, provideHttpClient(withInterceptorsFromDi())] })
+        ContactComponent,
+    ],
+    imports: [
+    BrowserModule,
+    HttpClientModule,
+    RouterModule.forRoot(routes),
+    FormsModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule
+    
+    
+],
+    providers: [AuthenticationService, provideAnimationsAsync()],
+    bootstrap: [AppComponent]
+})
 export class AppModule { }

@@ -1,1 +1,48 @@
-<p>home works!</p>
+<div class="home-container">
+  <div class="home-content">
+    <img src="assets/images/KK-logo pikk must.png" alt="KK Logo" class="home-logo" />
+    <div class="home-text">
+      <h1>Tere tulemast Kultuuriklubi kodulehele</h1>
+      <p>
+        Kultuuriklubi is your gateway to cultural events, art exhibitions, and community gatherings. 
+        Join us to explore and celebrate the vibrant culture around you. Stay updated with our latest 
+        events and activities!
+      </p>
+    </div>
+  </div>
+
+
+  <div class="about">
+    <h2>Meist</h2>
+    <p>
+      Kultuuriklubi on Tallinna Ülikooli tudengite loodud organisatsioon, mis ühendab kultuurihuvilisi 
+      inimesi. Meie eesmärk on pakkuda võimalusi osaleda erinevatel üritustel, arendada loovust ja 
+      luua uusi sõprussuhteid. Tule ja saa osa meie kogukonnast!
+    </p>
+  </div>
+
+  <div class="event-carousel">
+    <h2>Üritused</h2>
+    <div class="carousel-container">
+      <button class="carousel-button" (click)="previousEvent()" [disabled]="currentIndex === 0">
+        &#8249; <!-- Left arrow -->
+      </button>
+
+      <div class="carousel-item" *ngIf="events.length > 0">
+        <mat-card>
+          <img mat-card-image [src]="events[currentIndex]?.coverPicture" alt="{{ events[currentIndex]?.name }}" />
+          <mat-card-title>{{ events[currentIndex]?.name }}</mat-card-title>
+          <mat-card-content>
+            <p><strong>Kuupäev:</strong> {{ events[currentIndex]?.date | date }}&nbsp;&nbsp;
+               <strong>Aeg:</strong> {{ events[currentIndex]?.time }}</p>
+            <p>{{ events[currentIndex]?.description }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <button class="carousel-button" (click)="nextEvent()" [disabled]="currentIndex === events.length - 1">
+        &#8250; <!-- Right arrow -->
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,19 +1,26 @@
-<div class="banner"></div>
+<div class="banner">
+  <img src="assets/images/KK-pikk kõrvad must taustata.png" alt="KK Logo" class="logo" />
+</div>
 <nav class="navbar">
-  <a class="nav-link" routerLink="/home">Home</a>
-  <a class="nav-link" routerLink="/gallery">Gallery</a>
-  <a class="nav-link" routerLink="/contact">Contact</a>
-  <a 
-    *ngIf="isAuthenticated()" 
-    class="nav-link" 
-    routerLink="/admin" 
-  >
-    Admin
-  </a>
-  <a  class="nav-link" routerLink="/login">Login</a>
-  <a  class="nav-link" routerLink="/register">Register</a>
+  <a class="nav-link" routerLink="/home">Avaleht</a>
+  <a class="nav-link" routerLink="/gallery">Galerii</a>
+  <a class="nav-link" routerLink="/contact">Kontakt</a>
+  <a *ngIf="isAuthenticated()" class="nav-link" routerLink="/admin">Admin</a>
+  <a class="nav-link" routerLink="/login">Login</a>
+  <a *ngIf="isAuthenticated()"class="nav-link" routerLink="/register">Register</a>
+  <a *ngIf="isAuthenticated()"class="nav-link" (click)="logout()">Logout</a>
 </nav>
-  <router-outlet></router-outlet>
+<router-outlet></router-outlet>
+<footer class="footer">
+  <div class="footer-content">
+    <p>Kultuuriklubi.</p>
+    <p>
+      Jälgige meid sotsiaalmeedias:
+      <a href="https://facebook.com/kultuuriklubi" target="_blank">Facebook</a> |
+      <a href="https://instagram.com/kultuuriklubitlu" target="_blank">Instagram</a> 
+    </p>
+  </div>
+</footer>
 
 
 
