@@ -85,3 +85,4 @@ exports.login = async (req, res) => {
 };
 
 exports.protected = async (req, res) => {};
+

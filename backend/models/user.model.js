@@ -1,6 +1,4 @@
 const { Schema, model } = require("mongoose");
-
-//creating user schema for database
 const userSchema = new Schema(
   {
     name: { type: String, required: true },
@@ -10,7 +8,5 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-
 const User = model("User", userSchema);
-
 module.exports = User;

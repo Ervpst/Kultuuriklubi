@@ -10,7 +10,7 @@ exports.createEvent = async (req, res) => {
       return res.status(400).json({ error: "Cover picture is required." });
     }
 
-    // Create a new event
+    // event template
     const newEvent = new Event({
       name,
       description,
@@ -63,3 +63,5 @@ exports.deleteEvent = async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   };
+
+  

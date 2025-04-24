@@ -12,3 +12,9 @@ router.delete("/deleteEvent/:id", reqAuth, eventController.deleteEvent);
 
 
 module.exports = router;
+
+router.post("/createEvent",upload.single("coverPicture"), eventController.createEvent);
+
+router.get("/getEvents",eventController.getEvents);
+
+router.delete("/deleteEvent/:id",reqAuth, eventController.deleteEvent);

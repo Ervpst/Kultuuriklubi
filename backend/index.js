@@ -16,7 +16,10 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
 
-
+//server running
+app.listen(port, () => {
+	console.log(`Server is running on port ${port}`);
+	});
 
 //database connection
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.dyculxs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -38,20 +41,3 @@ app.get("*", (req, res) => {
   res.send("404");
 });
 
-app.get("/get", (req, res) => {
-	console.log("GET Request Successfull!");
-	res.send("Get Req Successfully initiated");
-})
-app.get('/', (req, res) => {
-res.send('Toimib!!!!');
-});
-
-app.post("/post", (req, res) => {
-	console.log("POST REQUEST SUCCESSFUL");
-	console.log(req.body);
-	res.send(`Data POSt Request Recieved`);
-})
-
-app.listen(port, () => {
-console.log(`Server is running on port ${port}`);
-});

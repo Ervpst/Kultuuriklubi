@@ -14,8 +14,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 
 
-import { AuthenticationService } from './authentication.service';
-import { authGuard } from './auth.guard';
+import { AuthenticationService } from './services/authentication.service';
+import { authGuard } from './guards/auth.guard';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component'; 
