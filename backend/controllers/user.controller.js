@@ -19,11 +19,11 @@ exports.signup = async (req, res) => {
     }
     //salting
     const salt = await bcrypt.genSalt(10);
-    if (!salt) throw Error("Something happened 1");
+    if (!salt) throw Error("Failed to generate salt!");
 
     //salt password from req.body
     const hash = await bcrypt.hash(password, salt);
-    if (!hash) throw Error("Something happened 2");
+    if (!hash) throw Error("Failed to hash the password!");
 
     //usertemplate
     const newUser = new User({

@@ -43,14 +43,17 @@ export class AdminComponent {
     formData.append('date', this.eventDate);
     formData.append('time', this.eventTime);
     formData.append('coverPicture', this.selectedFile);
+    const token = localStorage.getItem('jwt');
 
-    this.http.post('http://localhost:4201/event/createEvent', formData).subscribe({
+    this.http.post('http://localhost:4201/event/createEvent', formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      }).subscribe({
       next: (response: any) => {
         alert('Üritus lisati edukalt!');
         this.fetchEvents();
       },
       error: (err) => {
-        console.error('Error ürituse loomisel:', err);
+        console.error('Error in creating event:', err);
         alert('Ei saanud üritust luua.');
       },
     });
@@ -63,7 +66,7 @@ export class AdminComponent {
         this.events = response;
       },
       error: (err) => {
-        console.error('Error ürituste saamisel:', err);
+        console.error('Error in fetching event:', err);
       },
     });
   }
@@ -82,7 +85,7 @@ export class AdminComponent {
         },
         error: (err) => {
           console.error('Error ürituse kustutamisega:', err);
-          alert('Üritust ei saanud kustutada.');
+          alert('Error event deletion.');
         },
       });
   }
@@ -97,14 +100,17 @@ export class AdminComponent {
     const formData = new FormData();
     formData.append('name', this.galleryName);
     formData.append('galleryPicture', this.selectedGalleryFile);
+    const token = localStorage.getItem('jwt'); 
 
-    this.http.post('http://localhost:4201/gallery/createGalleryPic', formData).subscribe({
+    this.http.post('http://localhost:4201/gallery/createGalleryPic', formData, {
+      headers: { Authorization: `Bearer ${token}` }, 
+    }).subscribe({
       next: (response: any) => {
         alert('Pilt lisati galeriisse edukalt!');
         this.fetchGallery();
       },
       error: (err) => {
-        console.error('Error pildi laadimisega:', err);
+        console.error('Error picture loading:', err);
         alert('Pilti ei saanud ülesse laadida.');
       },
     });
@@ -136,7 +142,7 @@ export class AdminComponent {
           this.fetchGallery();
         },
         error: (err) => {
-          console.error('Error pildi kustutamisel:', err);
+          console.error('Error deleting picture:', err);
           alert('Pilti ei saanud kustutada.');
         },
       });

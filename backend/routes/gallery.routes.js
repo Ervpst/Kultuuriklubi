@@ -4,11 +4,9 @@ const upload = require("../middleware/upload");
 const reqAuth = require("../middleware/reqAuth.js");
 
 // Picture upload route
-router.post("/createGalleryPic", upload.single("galleryPicture"), galleryController.createGalleryPic);
-
+router.post("/createGalleryPic", reqAuth, upload.single("galleryPicture"), galleryController.createGalleryPic);
 // All pictures route
 router.get("/getGalleryPics", galleryController.getGalleryPics);
-
 // Delete picture route
 router.delete("/deleteGalleryPic/:id", reqAuth, galleryController.deleteGalleryPic);
 
