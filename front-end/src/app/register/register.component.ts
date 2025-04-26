@@ -1,39 +1,49 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
-  name: string = '';
-  email: string = '';
-  password: string = '';
+  registerForm: FormGroup; 
   errors: string[] = []; 
 
-  constructor(private authenticationService: AuthenticationService, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private authenticationService: AuthenticationService,
+    private router: Router
+  ) {
+    this.registerForm = this.fb.group({
+      name: ['', Validators.required,Validators.minLength(3)],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(4)]],
+    });
+  }
 
-  onSubmit(form: NgForm): void {
-    if (form.valid) {
+  onSubmit(): void {
+    if (this.registerForm.valid) {
       this.errors = []; 
-      this.authenticationService.register(this.name, this.email, this.password).subscribe({
+      const formData = this.registerForm.value;
+
+      this.authenticationService.register(formData.name, formData.email, formData.password).subscribe({
         next: () => {
           alert('Registreerimine õnnestus!');
-          this.router.navigate(['/admin']);
+          this.router.navigate(['/admin']); 
         },
         error: (err) => {
           console.error('Registreerimine ebaõnnestus.', err);
 
           // Validations errors
           if (err.status === 422 && err.error.errors) {
-            this.errors = err.error.errors.map((e: any) => `${e.param}: ${e.msg}`); 
+            this.errors = err.error.errors.map((e: any) => `${e.param}: ${e.msg}`);
           } else {
             this.errors = [err.error?.message || 'Tundmatu viga, proovi uuesti'];
           }
-        }
+        },
       });
     }
   }

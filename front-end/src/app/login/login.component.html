@@ -2,24 +2,43 @@
   <mat-card>
     <mat-card-title>Login</mat-card-title>
     <mat-card-content>
-      <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Nimi</mat-label>
-          <input matInput [(ngModel)]="name" name="name" required />
+          <input matInput formControlName="name" required />
+          <mat-error *ngIf="loginForm.get('name')?.hasError('required')">
+            Nimi on kohustuslik
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+            Nimi peab olema vähemalt 3 tähemärki
+          </mat-error>
         </mat-form-field>
-
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>
-          <input matInput [(ngModel)]="email" name="email" type="email" required />
+          <input matInput formControlName="email" type="email" required />
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+            E-mail on kohustuslik
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+            E-maili formaat on vale
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Parool</mat-label>
-          <input matInput [(ngModel)]="password" name="password" type="password" required />
+          <input matInput formControlName="password" type="password" required />
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+            Parool on kohustuslik
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+            Parool peab olema vähemalt 4 tähemärki
+          </mat-error>
         </mat-form-field>
 
         <div class="button-container">
-          <button mat-raised-button color="primary" type="submit">Login</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+            Login
+          </button>
           <button mat-raised-button color="warn" type="button" (click)="logout()">Logout</button>
         </div>
       </form>

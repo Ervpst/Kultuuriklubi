@@ -6,36 +6,51 @@
       <mat-card>
         <mat-card-title>Ürituse lisamine</mat-card-title>
         <mat-card-content>
-          <form (submit)="createEvent()" enctype="multipart/form-data">
+          <form [formGroup]="eventForm" (ngSubmit)="createEvent()" enctype="multipart/form-data">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Ürituse nimi</mat-label>
-              <input matInput [(ngModel)]="eventName" name="name" required />
+              <input matInput formControlName="name" required />
+              <mat-error *ngIf="eventForm.get('name')?.hasError('required')">
+                Nimi on kohustuslik
+              </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Ürituse kirjeldus</mat-label>
-              <textarea matInput [(ngModel)]="eventDescription" name="description" required></textarea>
+              <textarea matInput formControlName="description" required></textarea>
+              <mat-error *ngIf="eventForm.get('description')?.hasError('required')">
+                Kirjeldus on kohustuslik
+              </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Kuupäev</mat-label>
-              <input matInput [(ngModel)]="eventDate" name="date" type="date" required />
+              <input matInput formControlName="date" type="date" required />
+              <mat-error *ngIf="eventForm.get('date')?.hasError('required')">
+                Kuupäev on kohustuslik
+              </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Aeg</mat-label>
-              <input matInput [(ngModel)]="eventTime" name="time" type="time" required />
+              <input matInput formControlName="time" type="time" required />
+              <mat-error *ngIf="eventForm.get('time')?.hasError('required')">
+                Aeg on kohustuslik
+              </mat-error>
             </mat-form-field>
 
             <div class="full-width file-input-container">
               <label for="event-cover" class="custom-file-label">
                 Vali ürituse pilt
-                <input id="event-cover" type="file" (change)="onFileSelected($event)" required />
-             </label>
-            <span class="file-name">{{ selectedFile?.name || 'Ühtegi faili pole valitud' }}</span>
-          </div>
+                <input id="event-cover" type="file" (change)="onEventFileSelected($event)" required />
+              </label>
+              <span class="file-name">{{ selectedEventFile?.name || 'Ühtegi faili pole valitud' }}</span>
+            </div>
+
             <div class="button-container">
-              <button mat-raised-button color="primary" type="submit">Lisa üritus</button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="eventForm.invalid">
+                Lisa üritus
+              </button>
             </div>
           </form>
         </mat-card-content>
@@ -62,22 +77,27 @@
       <mat-card>
         <mat-card-title>Pildi lisamine</mat-card-title>
         <mat-card-content>
-          <form (submit)="uploadGalleryPicture()" enctype="multipart/form-data">
+          <form [formGroup]="galleryForm" (ngSubmit)="uploadGalleryPicture()" enctype="multipart/form-data">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Pildi pealkiri</mat-label>
-              <input matInput [(ngModel)]="galleryName" name="galleryName" required />
+              <input matInput formControlName="name" required />
+              <mat-error *ngIf="galleryForm.get('name')?.hasError('required')">
+                Pealkiri on kohustuslik
+              </mat-error>
             </mat-form-field>
 
             <div class="full-width file-input-container">
               <label for="gallery-picture" class="custom-file-label">
                 Vali pildi fail
                 <input id="gallery-picture" type="file" (change)="onGalleryFileSelected($event)" required />
-             </label>
-            <span class="file-name">{{ selectedGalleryFile?.name || 'Ühtegi faili ei valitud' }}</span>
-          </div>
+              </label>
+              <span class="file-name">{{ selectedGalleryFile?.name || 'Ühtegi faili ei valitud' }}</span>
+            </div>
 
             <div class="button-container">
-              <button mat-raised-button color="primary" type="submit">Lisa pilt</button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="galleryForm.invalid">
+                Lisa pilt
+              </button>
             </div>
           </form>
         </mat-card-content>
