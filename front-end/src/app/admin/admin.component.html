@@ -107,7 +107,7 @@
         <mat-card-title>Galerii pildid</mat-card-title>
         <mat-card-content>
           <div *ngFor="let picture of gallery" class="gallery-item">
-            <img *ngIf="picture.galleryPicture" [src]="picture.galleryPicture" alt="Gallery Picture" />
+            <img *ngIf="picture.imageUrl" [src]="apiUrl + picture.imageUrl" alt="Gallery picture"/>
             <p>{{ picture.name }}</p>
             <button mat-raised-button color="warn" (click)="deleteGalleryPicture(picture._id)">Kustuta</button>
           </div>

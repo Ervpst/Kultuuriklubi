@@ -19,9 +19,9 @@ export class LoginComponent {
   ) {
     
     this.loginForm = this.fb.group({
-      name: ['', Validators.required,Validators.minLength(3)],
+      name: ['', [Validators.required,Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required, Validators.minLength(4)],
+      password: ['', [Validators.required, Validators.minLength(4)]],
     });
   }
 
@@ -34,7 +34,7 @@ export class LoginComponent {
         next: (res) => {
           this.authenticationService.saveToken(res.token); 
           alert('Sisselogimine õnnestus!');
-          this.router.navigate(['/home']); 
+          this.router.navigate(['/admin']); 
         },
         error: (err) => {
           console.error('Login ebaõnnestus.', err);

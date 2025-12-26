@@ -14,6 +14,7 @@ export class AdminComponent implements OnInit {
   selectedGalleryFile: File | null = null; 
   events: any[] = []; 
   gallery: any[] = []; 
+  apiUrl = 'http://localhost:4201';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     
@@ -138,10 +139,11 @@ deleteEvent(eventId: string): void {
   fetchGallery(): void {
     this.http.get('http://localhost:4201/gallery/getGalleryPics').subscribe({
       next: (response: any) => {
-        this.gallery = response;
+        this.gallery = response.items ?? [];
       },
       error: (err) => {
         console.error('Error fetching gallery pictures:', err);
+        this.gallery = [];
       },
     });
   }

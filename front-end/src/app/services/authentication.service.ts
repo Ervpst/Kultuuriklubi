@@ -57,7 +57,7 @@ export class AuthenticationService {
       }
       return true;
     } catch (error) {
-      this.logout(); // Uncorrect token
+      this.logout(); // invalid token
       return false;
     }
   }

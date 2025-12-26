@@ -7,6 +7,7 @@ const reqAuth = require("../middleware/reqAuth.js");
 router.post("/createGalleryPic", reqAuth, upload.single("galleryPicture"), galleryController.createGalleryPic);
 // All pictures route
 router.get("/getGalleryPics", galleryController.getGalleryPics);
+router.get("/pic/:id", galleryController.getGalleryPicImage);
 // Delete picture route
 router.delete("/deleteGalleryPic/:id", reqAuth, galleryController.deleteGalleryPic);
 

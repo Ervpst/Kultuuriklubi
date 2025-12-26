@@ -77,6 +77,7 @@ exports.login = async (req, res) => {
       token,
       ...userTemplate,
     });
+    
   } catch (e) {
     res.status(400).json({
       error: e.message,

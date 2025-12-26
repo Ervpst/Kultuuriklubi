@@ -31,7 +31,7 @@ exports.createEvent = async (req, res) => {
 // Get all events
 exports.getEvents = async (req, res) => {
   try {
-    const events = await Event.find().sort({ date: 1 }); 
+    const events = await Event.find(); 
 
     
     const eventsWithImages = events.map((event) => {

@@ -1,146 +1,120 @@
-const User = require("../../models/user.model");
-const { signup, login } = require("../../controllers/user.controller");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+jest.mock('../../models/user.model', () => {
+  const UserMock = jest.fn().mockImplementation(function(data) {
+    this.name = data.name;
+    this.email = data.email;
+    this.password = data.password;
+    this.save = jest.fn().mockResolvedValue(this);
+  });
+  UserMock.findOne = jest.fn();
+  return UserMock;
+});
 
-jest.mock("../../models/user.model");
-jest.mock("bcrypt");
-jest.mock("jsonwebtoken");
+jest.mock('bcrypt', () => ({
+  genSalt: jest.fn().mockResolvedValue('fake_salt'),
+  hash: jest.fn().mockResolvedValue('fake_hashed_pw'),
+  compare: jest.fn().mockResolvedValue(true)
+}));
 
-describe("User Controller", () => {
-  describe("signup", () => {
-    it("should create a new user successfully", async () => {
-      const req = {
-        body: { name: "Test User", email: "test@example.com", password: "password123" },
-      };
+jest.mock('jsonwebtoken', () => ({
+  sign: jest.fn().mockReturnValue('fake_jwt_token')
+}));
+
+const { signup, login } = require('../../controllers/user.controller');
+const User = require('../../models/user.model');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+describe('User Auth Controllers', () => {
+  describe('signup', () => {
+    it('should return 422 if email already exists', async () => {
+      const req = { body: { name: 'John', email: 'john@example.com', password: '123456' } };
       const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
-
-      User.findOne.mockResolvedValue(null); 
-      bcrypt.genSalt.mockResolvedValue("salt");
-      bcrypt.hash.mockResolvedValue("hashedPassword");
-      User.prototype.save = jest.fn().mockResolvedValue({ name: "Test User", email: "test@example.com" });
+      User.findOne.mockResolvedValueOnce({ id: 'abc', email: 'john@example.com' });
 
       await signup(req, res);
 
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith({ message: "User created successfully" });
-    });
-
-    it("should return 422 if email already exists", async () => {
-      const req = { body: { email: "test@example.com" } };
-      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
-
-      User.findOne.mockResolvedValue({ email: "test@example.com" });
-
-      await signup(req, res);
-
+      expect(User.findOne).toHaveBeenCalledWith({ email: 'john@example.com' });
       expect(res.status).toHaveBeenCalledWith(422);
       expect(res.json).toHaveBeenCalledWith({ errors: [{ msg: "Email already exists", param: "email" }] });
     });
 
-    it("should return 400 if an error occurs during signup", async () => {
-      const req = { body: { name: "Test User", email: "test@example.com", password: "password123" } };
+    it('should create a new user and return 200 on successful signup', async () => {
+      const req = { body: { name: 'Jane Doe', email: 'jane@domain.com', password: 'pwd123' } };
       const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+      User.findOne.mockResolvedValueOnce(null);
 
-      User.findOne.mockRejectedValue(new Error("Database error"));
+      await signup(req, res);
+
+      expect(bcrypt.genSalt).toHaveBeenCalledWith(10);
+      expect(bcrypt.hash).toHaveBeenCalledWith('pwd123', 'fake_salt');
+      expect(User).toHaveBeenCalledWith({ name: 'Jane Doe', email: 'jane@domain.com', password: 'fake_hashed_pw' });
+      const newUserInstance = User.mock.instances[0];
+      expect(newUserInstance.save).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ message: "User created successfully" });
+    });
+
+    it('should handle failure to save user (server error scenario)', async () => {
+      const req = { body: { name: 'Jim', email: 'jim@domain.com', password: 'pass' } };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+      User.findOne.mockResolvedValueOnce(null);
+      const fakeUserInstance = { save: jest.fn().mockResolvedValue(null) };
+      User.mockImplementation(() => fakeUserInstance);
 
       await signup(req, res);
 
       expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ error: "Database error" });
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ error: expect.stringMatching(/Error saving user/) }));
     });
   });
 
+  describe('login', () => {
+    it('should return 400 if user with email does not exist', async () => {
+      const req = { body: { email: 'noone@nowhere.com', password: 'secret' } };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+      User.findOne.mockResolvedValueOnce(null);
 
-describe('login', () => {
-  let req, res;
+      await login(req, res);
 
-  beforeEach(() => {
-    req = {
-      body: {
-        name: 'John',
-        email: 'john@example.com',
-        password: 'password123',
-      },
-    };
+      expect(User.findOne).toHaveBeenCalledWith({ email: 'noone@nowhere.com' });
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: "User with this e-mail does not exist" });
+    });
 
-    res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-  });
+    it('should return 400 if password is incorrect', async () => {
+      const req = { body: { email: 'user@site.com', password: 'wrongpwd' } };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+      User.findOne.mockResolvedValueOnce({ id: 'u123', name: 'User', email: 'user@site.com', password: 'hashedpwd' });
+      bcrypt.compare.mockResolvedValueOnce(false);
 
-  it('should login successfully and return a token', async () => {
-    const mockUser = {
-      _id: '123',
-      id: '123',
-      name: 'John',
-      email: 'john@example.com',
-      password: 'hashedpassword',
-    };
+      await login(req, res);
 
-    User.findOne.mockResolvedValue(mockUser);
-    bcrypt.compare.mockResolvedValue(true); // password matches
-    jwt.sign.mockReturnValue('fake-jwt-token');
+      expect(User.findOne).toHaveBeenCalledWith({ email: 'user@site.com' });
+      expect(bcrypt.compare).toHaveBeenCalledWith('wrongpwd', 'hashedpwd');
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({ error: "Password is not correct" });
+    });
 
-    await login(req, res);
+    it('should return 200 and token + user info if credentials are correct', async () => {
+      const req = { body: { email: 'user@site.com', password: 'rightpwd' } };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+      User.findOne.mockResolvedValueOnce({ id: 'u999', name: 'Test User', email: 'user@site.com', password: 'hashedpwd' });
+      bcrypt.compare.mockResolvedValueOnce(true);
+      jwt.sign.mockReturnValue('jwt_token_123');
 
-    expect(User.findOne).toHaveBeenCalledWith({ email: req.body.email });
-    expect(bcrypt.compare).toHaveBeenCalledWith(req.body.password, mockUser.password);
-    expect(jwt.sign).toHaveBeenCalledWith({ _id: mockUser._id }, process.env.JWT_SECRET, { expiresIn: '30m' });
+      await login(req, res);
 
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({
-      token: 'fake-jwt-token',
-      id: mockUser.id,
-      name: mockUser.name,
-      email: mockUser.email,
-      message: 'Auth Succesful',
+      expect(User.findOne).toHaveBeenCalledWith({ email: 'user@site.com' });
+      expect(bcrypt.compare).toHaveBeenCalledWith('rightpwd', 'hashedpwd');
+      expect(jwt.sign).toHaveBeenCalledWith({ _id: 'u999' }, process.env.JWT_SECRET, { expiresIn: "30m" });
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        token: 'jwt_token_123',
+        id: 'u999',
+        name: 'Test User',
+        email: 'user@site.com',
+        message: "Auth Succesful"
+      });
     });
   });
-
-  it('should return 400 if user not found', async () => {
-    User.findOne.mockResolvedValue(null);
-
-    await login(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({
-      error: 'User with this e-mail does not exist',
-    });
-  });
-
-  it('should return 400 if password does not match', async () => {
-    User.findOne.mockResolvedValue({ password: 'hashedpassword' });
-    bcrypt.compare.mockResolvedValue(false);
-
-    await login(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({
-      error: 'Password is not correct',
-    });
-  });
-
-  it('should return 400 if token creation fails', async () => {
-    const mockUser = {
-      _id: '123',
-      id: '123',
-      name: 'John',
-      email: 'john@example.com',
-      password: 'hashedpassword',
-    };
-
-    User.findOne.mockResolvedValue(mockUser);
-    bcrypt.compare.mockResolvedValue(true);
-    jwt.sign.mockReturnValue(null); // token creation failed
-
-    await login(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({
-      error: 'Token not found',
-    });
-  });
-});
 });

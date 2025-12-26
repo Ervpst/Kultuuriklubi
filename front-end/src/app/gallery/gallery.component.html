@@ -1,15 +1,15 @@
 <div class="gallery-container">
   <h1>Galerii</h1>
+
   <div class="gallery-grid">
-    <mat-card *ngFor="let picture of gallery" class="gallery-item" (click)="openImageDialog(picture.galleryPicture)">
+    <mat-card *ngFor="let picture of gallery; trackBy: trackById" class="gallery-item" (click)="openImageDialog(picture.imageUrl)">
       <mat-card-header>
         <mat-card-title>{{ picture.name }}</mat-card-title>
       </mat-card-header>
-      <img mat-card-image *ngIf="picture.galleryPicture" [src]="picture.galleryPicture" alt="Gallery Picture" />
+      <img mat-card-image *ngIf="picture.imageUrl" [src]="apiUrl + picture.imageUrl" alt="Gallery Picture" loading="lazy"/>
     </mat-card>
   </div>
 </div>
-
 
 <ng-template #imageDialog let-data>
   <div class="dialog-container">

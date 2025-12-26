@@ -11,6 +11,8 @@ export class GalleryComponent implements OnInit {
   gallery: any[] = [];
   @ViewChild('imageDialog') imageDialog!: TemplateRef<any>;
 
+  apiUrl = 'http://localhost:4201';
+
   constructor(private http: HttpClient, private dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -18,20 +20,26 @@ export class GalleryComponent implements OnInit {
   }
 
   fetchGallery(): void {
-    this.http.get('http://localhost:4201/gallery/getGalleryPics').subscribe({
-      next: (response: any) => {
-        this.gallery = response;
-      },
-      error: (err) => {
-        console.error('Error fetching gallery pictures:', err);
-      },
+    this.http
+      .get(`${this.apiUrl}/gallery/getGalleryPics?page=1&limit=20`)
+      .subscribe({
+        next: (response: any) => {
+          this.gallery = response.items;
+        },
+        error: (err) => {
+          console.error('Error fetching gallery pictures:', err);
+        },
+      });
+  }
+
+  openImageDialog(imagePath: string): void {
+    this.dialog.open(this.imageDialog, {
+      data: `${this.apiUrl}${imagePath}`, 
+      panelClass: 'custom-dialog-container',
     });
   }
 
-  openImageDialog(imageUrl: string): void {
-    this.dialog.open(this.imageDialog, {
-      data: imageUrl,
-      panelClass: 'custom-dialog-container',
-    });
+  trackById(_: number, item: any) {
+    return item._id;
   }
 }
