@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true);
 const app = express();
-const port = 4201;
+const PORT = 4201;
 require("dotenv").config();
 const cors = require("cors");
 
@@ -17,8 +17,8 @@ app.use(express.json());
 app.use(cors());
 
 //server running
-app.listen(port, () => {
-	console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+	console.log(`Server is running on port ${PORT}`);
 	});
 
 //database connection
