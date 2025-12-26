@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true);
 const app = express();
-const PORT = 4201;
+const PORT = process.env.PORT || 4201;
 require("dotenv").config();
 const cors = require("cors");
 
