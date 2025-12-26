@@ -13,10 +13,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/front-end/browser",
+            "outputPath": { "base": "dist/front-end", "browser": "" },
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "baseHref": "/",
+            "baseHref": ".",
             "polyfills": [
               "zone.js"
             ],
