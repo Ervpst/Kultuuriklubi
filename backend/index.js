@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true);
 const app = express();
-const PORT = process.env.PORT || 4201;
+const port = process.env.PORT || 10000;;
 require("dotenv").config();
 const cors = require("cors");
 
@@ -17,9 +17,9 @@ app.use(express.json());
 app.use(cors());
 
 //server running
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
-	});
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 //database connection
 const uri =`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.dyculxs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
