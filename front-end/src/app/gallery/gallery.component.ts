@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../enviroments/enviroment.prod';
+import { environment } from '../../environments/environment.prod';
 
 @Component({
   selector: 'app-gallery',
