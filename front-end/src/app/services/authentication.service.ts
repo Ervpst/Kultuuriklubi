@@ -20,7 +20,7 @@ export class AuthenticationService {
   ) { }
 
   register(name: string, email:string, password: string){
-    return this.http.post(`${this.apiUrl}/signup`, {name, email, password});
+    return this.http.post(`${this.apiUrl}/user/signup`, {name, email, password});
   }
 
 
@@ -31,7 +31,7 @@ export class AuthenticationService {
   }
 
   login(name: string, email: string, password: string){
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, {name, email, password});
+    return this.http.post<AuthResponse>(`${this.apiUrl}/user/login`, {name, email, password});
   }
 
   saveToken(token: string){
