@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   }
 
   fetchEvents(): void {
-    this.http.get<any[]>(`https://kultuuriklubi.onrender.com/event/getEvents`).subscribe({
+    this.http.get<any[]>(`https://kultuuriklubi-backend.onrender.com/event/getEvents`).subscribe({
       next: (response) => {
         // sort by date decreasing
         this.events = response.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
