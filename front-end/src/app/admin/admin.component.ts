@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../enviroments/enviroment.prod';
 
 @Component({
   selector: 'app-admin',
@@ -14,7 +15,7 @@ export class AdminComponent implements OnInit {
   selectedGalleryFile: File | null = null; 
   events: any[] = []; 
   gallery: any[] = []; 
-  apiUrl = 'http://localhost:4201';
+  apiUrl = `${environment.apiUrl}`;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     
@@ -62,7 +63,7 @@ export class AdminComponent implements OnInit {
 
     const token = localStorage.getItem('jwt');
 
-    this.http.post('http://localhost:4201/event/createEvent', formData, {
+    this.http.post(`${environment.apiUrl}/event/createEvent`, formData, {
       headers: { Authorization: `Bearer ${token}` },
     }).subscribe({
       next: () => {
@@ -79,7 +80,7 @@ export class AdminComponent implements OnInit {
   }
  //All events
  fetchEvents(): void {
-  this.http.get('http://localhost:4201/event/getEvents').subscribe({
+  this.http.get(`${environment.apiUrl}/event/getEvents`).subscribe({
     next: (response: any) => {
       this.events = response;
     },
@@ -93,7 +94,7 @@ export class AdminComponent implements OnInit {
 deleteEvent(eventId: string): void {
   const token = localStorage.getItem('jwt');
 
-  this.http.delete(`http://localhost:4201/event/deleteEvent/${eventId}`, {
+  this.http.delete(`${environment.apiUrl}/event/deleteEvent/${eventId}`, {
     headers: { Authorization: `Bearer ${token}` },
   }).subscribe({
     next: () => {
@@ -119,7 +120,7 @@ deleteEvent(eventId: string): void {
 
     const token = localStorage.getItem('jwt');
 
-    this.http.post('http://localhost:4201/gallery/createGalleryPic', formData, {
+    this.http.post(`${environment.apiUrl}/gallery/createGalleryPic`, formData, {
       headers: { Authorization: `Bearer ${token}` },
     }).subscribe({
       next: () => {
@@ -137,7 +138,7 @@ deleteEvent(eventId: string): void {
 
   // Get all pictures
   fetchGallery(): void {
-    this.http.get('http://localhost:4201/gallery/getGalleryPics').subscribe({
+    this.http.get(`${environment.apiUrl}/gallery/getGalleryPics`).subscribe({
       next: (response: any) => {
         this.gallery = response.items ?? [];
       },
@@ -152,7 +153,7 @@ deleteEvent(eventId: string): void {
   deleteGalleryPicture(pictureId: string): void {
     const token = localStorage.getItem('jwt');
 
-    this.http.delete(`http://localhost:4201/gallery/deleteGalleryPic/${pictureId}`, {
+    this.http.delete(`${environment.apiUrl}/gallery/deleteGalleryPic/${pictureId}`, {
       headers: { Authorization: `Bearer ${token}` },
     }).subscribe({
       next: () => {

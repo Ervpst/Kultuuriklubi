@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { environment } from '../../enviroments/enviroment.prod';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   }
 
   fetchEvents(): void {
-    this.http.get<any[]>('http://localhost:4201/event/getEvents').subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/event/getEvents`).subscribe({
       next: (response) => {
         // sort by date decreasing
         this.events = response.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());

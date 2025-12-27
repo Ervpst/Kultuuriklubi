@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../enviroments/enviroment.prod';
 
 @Component({
   selector: 'app-gallery',
@@ -11,7 +12,7 @@ export class GalleryComponent implements OnInit {
   gallery: any[] = [];
   @ViewChild('imageDialog') imageDialog!: TemplateRef<any>;
 
-  apiUrl = 'http://localhost:4201';
+  apiUrl = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient, private dialog: MatDialog) {}
 

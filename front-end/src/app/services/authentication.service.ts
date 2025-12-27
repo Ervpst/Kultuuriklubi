@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../enviroments/enviroment.prod';
 
 interface AuthResponse{
   token:string
@@ -11,7 +12,7 @@ interface AuthResponse{
 })
 export class AuthenticationService {
 
-  private apiUrl = 'http://localhost:4201/user';
+  private apiUrl = `${environment.apiUrl}`;
   token: string|null = null;
 
   constructor(
