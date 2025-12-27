@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { environment } from '../../environments/environment';
+//import { environment } from '../../environments/environment';
 
 interface AuthResponse{
   token:string
@@ -12,7 +12,7 @@ interface AuthResponse{
 })
 export class AuthenticationService {
 
-  private apiUrl = `${environment.apiUrl}`;
+  private apiUrl = `https://kultuuriklubi.onrender.com`;
   token: string|null = null;
 
   constructor(

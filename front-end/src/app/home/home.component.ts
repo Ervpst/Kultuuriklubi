@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+//import { environment } from '../../environments/environment';
 
 
 @Component({
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   }
 
   fetchEvents(): void {
-    this.http.get<any[]>(`${environment.apiUrl}/event/getEvents`).subscribe({
+    this.http.get<any[]>(`https://kultuuriklubi.onrender.com/event/getEvents`).subscribe({
       next: (response) => {
         // sort by date decreasing
         this.events = response.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
