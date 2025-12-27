@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 
 interface AuthResponse{
   token:string
