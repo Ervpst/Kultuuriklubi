@@ -12,7 +12,7 @@ interface AuthResponse{
 })
 export class AuthenticationService {
 
-  private apiUrl = `https://kultuuriklubi-backend.onrender.com`;
+  private apiUrl = `http://localhost:4201`;
   token: string|null = null;
 
   constructor(

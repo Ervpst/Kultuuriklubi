@@ -12,7 +12,7 @@ export class GalleryComponent implements OnInit {
   gallery: any[] = [];
   @ViewChild('imageDialog') imageDialog!: TemplateRef<any>;
 
-  apiUrl = 'https://kultuuriklubi-backend.onrender.com';
+  apiUrl = 'http://localhost:4201';
 
   constructor(private http: HttpClient, private dialog: MatDialog) {}
 

@@ -15,7 +15,7 @@ export class AdminComponent implements OnInit {
   selectedGalleryFile: File | null = null; 
   events: any[] = []; 
   gallery: any[] = []; 
-  apiUrl = 'https://kultuuriklubi-backend.onrender.com';
+  apiUrl = 'http://localhost:4201';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     
